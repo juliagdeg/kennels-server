@@ -1,0 +1,7 @@
+{
+    "python.formatting.autopep8Path": "/home/juliagdeg/.pyenv/shims/autopep8",
+    "python.linting.pylintEnabled": true,
+    "python.analysis.diagnosticSeverityOverrides": {
+      "reportGeneralTypeIssues": "none"
+    }
+ }
