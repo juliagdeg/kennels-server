@@ -167,7 +167,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.wfile.write("".encode())
 
         if resource == "customers":
-            update_employee(id, post_body)
+            update_customer(id, post_body)
 
         self.wfile.write("".encode())
 
