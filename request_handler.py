@@ -1,6 +1,9 @@
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from views import get_all_animals, get_single_animal
+from views import get_all_locations, get_single_location
+from views import get_all_employees, get_single_employee
+from views import get_all_customers, get_single_customer
 
 # Here's a class. It inherits from another class.
 # For now, think of a class as a container for functions that
@@ -17,7 +20,7 @@ class HandleRequests(BaseHTTPRequestHandler):
     # Here's a method on the class that overrides the parent's method.
     # It handles any GET request.
     def do_GET(self):
-        self._set_headers(200)
+        self._set_headers(200) # single underscore should only be used in the stored file (this one ONLY)
         response = {}  # Default response
 
         # Parse the URL and capture the tuple that is returned
@@ -30,7 +33,31 @@ class HandleRequests(BaseHTTPRequestHandler):
             else:
                 response = get_all_animals()
 
+        if resource == "locations":
+            if id is not None:
+                response = get_single_location(id)
+
+            else:
+                response = get_all_locations()
+
+        if resource == "employees":
+            if id is not None:
+                response = get_single_employee(id)
+
+            else:
+                response = get_all_employees()
+
+        if resource == "customers":
+            if id is not None:
+                response = get_single_customer(id)
+
+            else:
+                response = get_all_customers()
+
+
         self.wfile.write(json.dumps(response).encode())
+
+
 
     # Here's a method on the class that overrides the parent's method.
     # It handles any POST request.
@@ -105,5 +132,6 @@ def main():
     HTTPServer((host, port), HandleRequests).serve_forever()
 
 
-if __name__ == "__main__":
-    main()
+if __name__ == "__main__": # double underscore file demarcation ?
+    main() # this function basically tells python to run
+    # this FIRST (kind of like querySelector maybe?)
