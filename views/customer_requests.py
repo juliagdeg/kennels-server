@@ -24,9 +24,12 @@ def get_all_customers():
         # Write the SQL query to get the information you want
         db_cursor.execute("""
         SELECT
-            a.id,
-            a.name
-        FROM customer a
+            c.id,
+            c.name,
+            c.address,
+            c.email,
+            c.password
+        FROM customer c
         """)
 
         # Initialize an empty list to hold all animal representations
@@ -42,7 +45,7 @@ def get_all_customers():
             # Note that the database fields are specified in
             # exact order of the parameters defined in the
             # Animal class above.
-            customer = Customer(row['id'], row['name'], row['address'])
+            customer = Customer(row['id'], row['name'], row['address'], row['email'], row['password'])
 
             customers.append(customer.__dict__)
 
@@ -58,21 +61,20 @@ def get_single_customer(id):
         # into the SQL statement.
         db_cursor.execute("""
         SELECT
-            a.id,
-            a.name,
-            a.breed,
-            a.status,
-            a.location_id,
-            a.customer_id
-        FROM customer a
-        WHERE a.id = ?
+            c.id,
+            c.name,
+            c.address,
+            c.email,
+            c.password
+        FROM customer c
+        WHERE c.id = ?
         """, ( id, ))
 
         # Load the single result into memory
         data = db_cursor.fetchone()
 
         # Create an customer instance from the current row
-        customer = Customer(data['id'], data['name'], data['address'])
+        customer = Customer(data['id'], data['name'], data['address'], data['email'], data['password'])
 
         return customer.__dict__
 
