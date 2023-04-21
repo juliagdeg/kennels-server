@@ -60,9 +60,10 @@ class HandleRequests(BaseHTTPRequestHandler):
     #     response = self.get_all_or_single(resource, id)
     #     self.wfile.write(json.dumps(response).encode())
     def do_GET(self):
-        self._set_headers(200)
 
-        response = {}
+        response = None
+
+        #vs code was being a stinky shit and not rewriting response but now it's working so whatever
 
         # Parse URL and store entire tuple in a variable
         parsed = self.parse_url(self.path)
@@ -71,19 +72,22 @@ class HandleRequests(BaseHTTPRequestHandler):
         if '?' not in self.path:
             ( resource, id ) = parsed
 
-            if resource == "animals":
-                if id is not None:
-                    response = get_single_animal(id)
-                else:
-                    response = get_all_animals()
-            elif resource == "customers":
-                if id is not None:
-                    response = get_single_customer(id)
-                else:
-                    response = get_all_customers()
+            response = self.get_all_or_single(resource, id)
+
+            # if resource == "animals":
+            #     if id is not None:
+            #         response = get_single_animal(id)
+            #     else:
+            #         response = get_all_animals()
+            # elif resource == "customers":
+            #     if id is not None:
+            #         response = get_single_customer(id)
+            #     else:
+            #         response = get_all_customers()
 
         else: # There is a ? in the path, run the query param functions
             (resource, query) = parsed
+            self._set_headers(200)
 
             # see if the query dictionary has an email key
             if query.get('email') and resource == 'customers':
@@ -186,7 +190,7 @@ class HandleRequests(BaseHTTPRequestHandler):
 
 
     def do_PUT(self):
-        self._set_headers(204)
+        # self._set_headers(204)
         content_len = int(self.headers.get('content-length', 0))
         post_body = self.rfile.read(content_len)
         post_body = json.loads(post_body)
@@ -208,20 +212,20 @@ class HandleRequests(BaseHTTPRequestHandler):
     # Encode the new animal and send in response
         self.wfile.write("".encode())
 
-        # if resource == "locations":
-        #     update_location(id, post_body)
+        if resource == "locations":
+            update_location(id, post_body)
 
-        # self.wfile.write("".encode())
+        self.wfile.write("".encode())
 
-        # if resource == "employees":
-        #     update_employee(id, post_body)
+        if resource == "employees":
+            update_employee(id, post_body)
 
-        # self.wfile.write("".encode())
+        self.wfile.write("".encode())
 
-        # if resource == "customers":
-        #     update_customer(id, post_body)
+        if resource == "customers":
+            update_customer(id, post_body)
 
-        # self.wfile.write("".encode())
+        self.wfile.write("".encode())
 
     def _set_headers(self, status):
         # Notice this Docstring also includes information about the arguments passed to the function

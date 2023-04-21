@@ -25,10 +25,10 @@ def get_all_employees():
         # Write the SQL query to get the information you want
         db_cursor.execute("""
         SELECT
-            a.id,
-            a.name,
-            a.location_id
-        FROM employee a
+            e.id,
+            e.name,
+            e.location_id
+        FROM employee e
         """)
 
         # Initialize an empty list to hold all employee representations
@@ -59,11 +59,11 @@ def get_single_employee(id):
         # into the SQL statement.
         db_cursor.execute("""
         SELECT
-            a.id,
-            a.name,
-            a.location_id
-        FROM employee a
-        WHERE a.id = ?
+            e.id,
+            e.name,
+            e.location_id
+        FROM employee e
+        WHERE e.id = ?
         """, ( id, ))
 
         # Load the single result into memory
